@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Piedra, Papel o Tijera - Cartas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    margin: 0;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  h1 {
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 8px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+  }
+  .cartas-container {
+    background: rgba(255,255,255,0.15);
+    padding: 20px 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  }
+  .cartas-jugador {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cartas-jugador button {
+    background: linear-gradient(145deg, #ffffff33, #ffffff11);
+    border: 2px solid #fff;
+    border-radius: 12px;
+    padding: 14px 22px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(255,255,255,0.1);
+    transition: 
+      background-color 0.25s ease,
+      transform 0.15s ease,
+      box-shadow 0.25s ease;
+    user-select: none;
+  }
+  .cartas-jugador button:hover:not(:disabled) {
+    background: #fff;
+    color: #764ba2;
+    box-shadow: 0 8px 16px rgba(255,255,255,0.6);
+    transform: translateY(-3px);
+  }
+  .cartas-jugador button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #666;
+    color: #ccc;
+    box-shadow: none;
+  }
+  .mensaje {
+    margin: 25px 0 15px;
+    font-size: 20px;
+    font-weight: 700;
+    min-height: 48px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+  }
+  .cartas-maquina {
+    font-style: italic;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  }
+  .estado {
+    font-size: 18px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.15);
+    padding: 10px 15px;
+    border-radius: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  footer {
+    margin-top: auto;
+    padding: 15px;
+    font-size: 14px;
+    color: #ddd;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Piedra, Papel o Tijera - Cartas</h1>
+
+<div class="cartas-container">
+  <div><strong>Tus cartas:</strong></div>
+  <div class="cartas-jugador" aria-label="Tus cartas disponibles para jugar"></div>
+
+  <div class="mensaje" role="alert" aria-live="polite"></div>
+
+  <div><strong>Máquina jugó:</strong></div>
+  <div class="cartas-maquina" aria-live="polite"></div>
+</div>
+
+<div class="estado" aria-live="polite"></div>
+
+<footer>Juego creado por ChatGPT</footer>
+
+<script>
+  const opciones = ['piedra', 'papel', 'tijera'];
+
+  // Función para repartir cartas aleatorias
+  function repartirCartas(n = 5) {
+    const cartas = [];
+    for (let i = 0; i < n; i++) {
+      cartas.push(opciones[Math.floor(Math.random() * opciones.length)]);
+    }
+    return cartas;
+  }
+
+  // Resultado: 1 jugador gana, -1 maquina gana, 0 empate
+function resultado(cartaJugador, cartaMaquina) {
+  if (cartaJugador === cartaMaquina) {
+    return 0; // empate
+  } else if (
+    (cartaJugador === 'piedra' && cartaMaquina === 'tijera') ||
+    (cartaJugador === 'tijera' && cartaMaquina === 'papel') ||
+    (cartaJugador === 'papel' && cartaMaquina === 'piedra')
+  ) {
+    return 1; // gana jugador
+  } else {
+    return -1; // gana máquina
+  }
+}
+  let cartasJugador = repartirCartas();
+  let cartasMaquina = repartirCartas();
+
+    const cartasJugadorDiv = document.querySelector('.cartas-jugador');
+    const mensajeDiv = document.querySelector('.mensaje');
+    const cartasMaquinaDiv = document.querySelector('.cartas-maquina');
+    const estadoDiv = document.querySelector('.estado');
+
+  function mostrarCartasJugador() {
+    cartasJugadorDiv.innerHTML = '';
+    cartasJugador.forEach((carta, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = carta;
+      btn.setAttribute('aria-label', `Jugar carta ${carta}`);
+      btn.onclick = () => jugarCarta(i);
+      cartasJugadorDiv.appendChild(btn);
+    });
+  }
+
+  function jugarCarta(indice) {
+    const cartaJugador = cartasJugador.splice(indice, 1)[0];
+    const indiceMaquina = Math.floor(Math.random() * cartasMaquina.length);
+    const cartaMaquina = cartasMaquina.splice(indiceMaquina, 1)[0];
+
+    cartasMaquinaDiv.textContent = cartaMaquina;
+
+    const res = resultado(cartaJugador, cartaMaquina);
+
+    if (res === 1) {
+      mensajeDiv.textContent = '¡Ganaste esta ronda! La máquina recibe 2 cartas nuevas.';
+      cartasMaquina.push(...repartirCartas(2));
+    } else if (res === -1) {
+      mensajeDiv.textContent = 'Perdiste esta ronda. Recibes 2 cartas nuevas.';
+      cartasJugador.push(...repartirCartas(2));
+    } else {
+      mensajeDiv.textContent = 'Empate. Ambos reciben 2 cartas nuevas.';
+      cartasJugador.push(...repartirCartas(2));
+      cartasMaquina.push(...repartirCartas(2));
+    }
+
+    actualizarEstado();
+    mostrarCartasJugador();
+    checkFinJuego();
+  }
+
+  function actualizarEstado() {
+    estadoDiv.textContent = `Tus cartas: ${cartasJugador.length} | Cartas máquina: ${cartasMaquina.length}`;
+  }
+
+  function checkFinJuego() {
+    if (cartasJugador.length === 0) {
+      mensajeDiv.textContent = '🎉 ¡Felicidades, ganaste el juego! 🎉';
+      bloquearCartas();
+    } else if (cartasMaquina.length === 0) {
+      mensajeDiv.textContent = '😞 La máquina ganó el juego. Mejor suerte la próxima.';
+      bloquearCartas();
+    }
+  }
+
+  function bloquearCartas() {
+    const botones = document.querySelectorAll('.cartas-jugador button');
+    botones.forEach(btn => btn.disabled = true);
+  }
+
+  // Inicialización
+  mostrarCartasJugador();
+  actualizarEstado();
+</script>
+
+</body>
+</html>

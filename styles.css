@@ -1,0 +1,93 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    margin: 0;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  h1 {
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 8px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+  }
+  .cartas-container {
+    background: rgba(255,255,255,0.15);
+    padding: 20px 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  }
+  .cartas-jugador {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cartas-jugador button {
+    background: linear-gradient(145deg, #ffffff33, #ffffff11);
+    border: 2px solid #fff;
+    border-radius: 12px;
+    padding: 14px 22px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(255,255,255,0.1);
+    transition: 
+      background-color 0.25s ease,
+      transform 0.15s ease,
+      box-shadow 0.25s ease;
+    user-select: none;
+  }
+  .cartas-jugador button:hover:not(:disabled) {
+    background: #fff;
+    color: #764ba2;
+    box-shadow: 0 8px 16px rgba(255,255,255,0.6);
+    transform: translateY(-3px);
+  }
+  .cartas-jugador button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #666;
+    color: #ccc;
+    box-shadow: none;
+  }
+  .mensaje {
+    margin: 25px 0 15px;
+    font-size: 20px;
+    font-weight: 700;
+    min-height: 48px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+  }
+  .cartas-maquina {
+    font-style: italic;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  }
+  .estado {
+    font-size: 18px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.15);
+    padding: 10px 15px;
+    border-radius: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  footer {
+    margin-top: auto;
+    padding: 15px;
+    font-size: 14px;
+    color: #ddd;
+    user-select: none;
+  }
